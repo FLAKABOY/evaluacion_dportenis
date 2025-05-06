@@ -163,7 +163,8 @@ button {
 
 /* Estilos para los inputs y selects */
 .card input,
-.card select {
+.card select,
+.card textarea {
     width: 100%;
     padding: 10px;
     border-radius: 4px;

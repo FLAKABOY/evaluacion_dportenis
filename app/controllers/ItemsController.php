@@ -72,10 +72,13 @@ class ItemsController extends Controller
 
         $menu_name = $_POST['menu_name']; // Nombre del menú
         $parent_menu = $_POST['parent_menu']; // ID del menú padre
+        $description = $_POST['description']; // Descripción del menú
 
         //Colocamos los valores en el modelo ya que si un tipo de dato no es correcto se lanza una excepción
         $this->model->setName($menu_name);
         $this->model->setIdParent($parent_menu);
+        $this->model->setDescription($description);
+
 
         if (empty($menu_name)) {
             echo json_encode(['status' => 'error', 'message' => 'El nombre del menú es obligatorio.']);
@@ -83,7 +86,7 @@ class ItemsController extends Controller
         }
 
         //Consumir el procedimiento almacenado para guardar el item y obtener la respuesta de error
-        $error = $this->model->executeBaseProcedure('sp_save_item', ['create', $this->model->getIdMenu() ,$this->model->getIdParent(), $this->model->getName()])[0]['ERROR'];
+        $error = $this->model->executeBaseProcedure('sp_save_item', ['create', $this->model->getIdMenu() ,$this->model->getIdParent(), $this->model->getName(), $this->model->getDescription()])[0]['ERROR'];
 
         if (!$error) {
             echo json_encode(['status' => 'success', 'message' => 'El menú se ha guardado correctamente.']);
@@ -101,13 +104,21 @@ class ItemsController extends Controller
 
         $menu_name = $_POST['menu_name']; // Nombre del menú
         $parent_menu = $_POST['parent_menu']; // ID del menú padre
+        $description = $_POST['description']; // Descripción del menú
         $id = $_GET['id']; // ID del menú a editar
 
 
         //Colocamos los valores en el modelo ya que si un tipo de dato no es correcto se lanza una excepción
         $this->model->setName($menu_name);
         $this->model->setIdParent($parent_menu);
+        $this->model->setDescription($description);
         $this->model->setIdMenu($id);
+
+        //imprimir en consola para verificar
+        /* echo "<pre>";
+        print_r($this->model);
+        echo "</pre>";
+        die(); */
 
         if (empty($menu_name)) {
             echo json_encode(['status' => 'error', 'message' => 'El nombre del menú es obligatorio.']);
@@ -115,7 +126,7 @@ class ItemsController extends Controller
         }
 
         //Consumir el procedimiento almacenado para guardar el item y obtener la respuesta de error
-        $error = $this->model->executeBaseProcedure('sp_save_item', ['update', $this->model->getIdMenu() ,$this->model->getIdParent(), $this->model->getName()])[0]['ERROR'];
+        $error = $this->model->executeBaseProcedure('sp_save_item', ['update', $this->model->getIdMenu() ,$this->model->getIdParent(), $this->model->getName(), $this->model->getDescription()])[0]['ERROR'];
 
         if (!$error) {
             echo json_encode(['status' => 'success', 'message' => 'El menú se ha actualizado correctamente.']);

@@ -16,6 +16,11 @@ echo "</pre>"; */
         </div>
 
         <div class="form-group">
+            <label for="description">Descripcion</label>
+            <textarea name="description" id="txt_description"><?= isset($data['item']['description']) ? $data['item']['name'] : '' ?></textarea>
+        </div>
+
+        <div class="form-group">
             <label for="parent_menu">Menú Padre</label>
             <select id="parent_menu" name="parent_menu">
                 <option value="0">-</option>
