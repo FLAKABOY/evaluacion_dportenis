@@ -1,31 +1,52 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 06-05-2025 a las 09:57:15
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.2.0
+/*
+ Navicat Premium Data Transfer
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 100432
+ Source Host           : localhost:3306
+ Source Schema         : evaluacion
 
+ Target Server Type    : MySQL
+ Target Server Version : 100432
+ File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+ Date: 06/05/2025 15:53:31
+*/
 
---
--- Base de datos: `evaluacion`
---
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-DELIMITER $$
---
--- Procedimientos
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_menu_json` ()   BEGIN
+-- ----------------------------
+-- Table structure for menus
+-- ----------------------------
+DROP TABLE IF EXISTS `menus`;
+CREATE TABLE `menus`  (
+  `id_menu` int NOT NULL AUTO_INCREMENT COMMENT 'identificador del menu',
+  `id_parent` int NOT NULL COMMENT 'identificador del menu padre',
+  `status` int NOT NULL DEFAULT 1 COMMENT 'estatus del menu',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'nombre del menu',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'descripcion del menu',
+  PRIMARY KEY (`id_menu`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menus
+-- ----------------------------
+INSERT INTO `menus` VALUES (1, 0, 1, 'Catalogos', 'Menu padre de los catalogos');
+INSERT INTO `menus` VALUES (3, 0, 1, 'Areas', 'menu de areas');
+INSERT INTO `menus` VALUES (4, 1, 1, 'paises', 'catalogo de paises');
+INSERT INTO `menus` VALUES (5, 3, 1, 'TI', 'Departamento de TI');
+INSERT INTO `menus` VALUES (14, 1, 1, 'Ciudades', '');
+INSERT INTO `menus` VALUES (15, 3, 1, 'Sistemas', '');
+
+-- ----------------------------
+-- Procedure structure for get_menu_json
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `get_menu_json`;
+delimiter ;;
+CREATE PROCEDURE `get_menu_json`()
+BEGIN
     SELECT 
         CONCAT(
             '[', 
@@ -50,6 +71,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_menu_json` ()   BEGIN
                                 )
                                 FROM menus sm
                                 WHERE sm.id_parent = m.id_menu
+																AND sm.status = 1
                             ), ''),
                         ']',
                     '}'
@@ -58,10 +80,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_menu_json` ()   BEGIN
             ']'
         ) AS menu_json
     FROM menus m
-    WHERE m.id_parent = 0;
-END$$
+    WHERE m.id_parent = 0
+		AND m.status = 1;
+END
+;;
+delimiter ;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_menu_items` (IN `ban` VARCHAR(50), IN `filter` TEXT)   BEGIN
+-- ----------------------------
+-- Procedure structure for sp_get_menu_items
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_get_menu_items`;
+delimiter ;;
+CREATE PROCEDURE `sp_get_menu_items`(IN `ban` VARCHAR(50), IN `filter_i` TEXT)
+BEGIN
     IF ban = 'get_all' THEN
         SELECT 
             CONCAT(
@@ -102,59 +133,126 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_menu_items` (IN `ban` VARCHA
         FROM menus m
         WHERE m.status = 1
         AND m.id_parent = 0;  -- Solo menús padres
+				
+		ELSEIF ban = 'get_item_by_id' THEN
+		
+				SET @id = (SELECT JSON_UNQUOTE(JSON_EXTRACT(filter_i, '$.id')));
+				
+        SELECT 
+					JSON_OBJECT(
+						'id_menu', m.id_menu,
+						'name', m.name,
+						'description', m.description,
+						'parent', JSON_OBJECT(
+								'id', m.id_parent,
+								'name', (SELECT name FROM menus WHERE id_menu = m.id_parent)
+						)
+					)
+				AS item
+        FROM menus m
+        WHERE m.id_menu = @id
+				AND m.status = 1
+				;
 
     ELSE
         SELECT '{"error": "Invalid case"}' AS items;
     END IF;
-END$$
+END
+;;
+delimiter ;
 
-DELIMITER ;
+-- ----------------------------
+-- Procedure structure for sp_save_item
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_save_item`;
+delimiter ;;
+CREATE PROCEDURE `sp_save_item`(IN `ban` VARCHAR(50), 
+IN `id_menu_i` BIGINT,
+IN `id_parent_i` BIGINT, 
+IN `name_i` VARCHAR(100),
+IN `description_i` TEXT)
+BEGIN
 
--- --------------------------------------------------------
+	DECLARE hasError BOOLEAN DEFAULT 0;
+	DECLARE CONTINUE HANDLER FOR sqlexception SET hasError = 1;
+	
+	
+    IF ban = 'create' THEN
+		
+				START TRANSACTION;
+				
+        INSERT INTO menus
+				(
+					id_parent,
+					name,
+					description
+				)
+				VALUES
+				(
+					id_parent_i,
+					name_i,
+					description_i
+				);
+				
+				IF hasError THEN
+					ROLLBACK;
+		      SELECT 
+						true AS ERROR;
+		  ELSE
+		      COMMIT;
+		      SELECT 
+						false AS ERROR;
+		  END IF;
+			
+		ELSEIF ban = 'update' THEN
+	
+			START TRANSACTION;
+			
+			UPDATE menus
+			SET 
+				id_parent = id_parent_i,
+				name = name_i,
+				description = description_i
+			WHERE id_menu = id_menu_i
+			;
+				
+			IF hasError THEN
+				ROLLBACK;
+				SELECT 
+					true AS ERROR;
+		  ELSE
+		      COMMIT;
+		      SELECT 
+						false AS ERROR;
+		  END IF;
+			
+		ELSEIF ban = 'delete' THEN
+		
+				START TRANSACTION;
+				
+				UPDATE menus
+				SET 
+					status = 0
+				WHERE id_menu = id_menu_i
+				;
+					
+				IF hasError THEN
+					ROLLBACK;
+					SELECT 
+						true AS ERROR;
+				ELSE
+						COMMIT;
+						SELECT 
+							false AS ERROR;
+				END IF;
+				
+		
 
---
--- Estructura de tabla para la tabla `menus`
---
+    ELSE
+        SELECT '{"error": "Invalid case"}' AS items;
+    END IF;
+END
+;;
+delimiter ;
 
-CREATE TABLE `menus` (
-  `id_menu` int(11) NOT NULL COMMENT 'identificador del menu',
-  `id_parent` int(11) NOT NULL COMMENT 'identificador del menu padre',
-  `status` int(11) NOT NULL DEFAULT 1 COMMENT 'estatus del menu',
-  `name` varchar(100) NOT NULL COMMENT 'nombre del menu',
-  `description` text NOT NULL COMMENT 'descripcion del menu'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `menus`
---
-
-INSERT INTO `menus` (`id_menu`, `id_parent`, `status`, `name`, `description`) VALUES
-(1, 0, 1, 'Catalogos', 'Menu padre de los catalogos'),
-(3, 0, 1, 'Areas', 'menu de areas'),
-(4, 1, 1, 'paises', 'catalogo de paises'),
-(5, 3, 1, 'TI', 'area de TI');
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `menus`
---
-ALTER TABLE `menus`
-  ADD PRIMARY KEY (`id_menu`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `menus`
---
-ALTER TABLE `menus`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificador del menu', AUTO_INCREMENT=6;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET FOREIGN_KEY_CHECKS = 1;
