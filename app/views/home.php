@@ -51,7 +51,9 @@ echo "</pre>"; */
         <h2>Lista de Ítems del Menú</h2>
         <!-- Botón Agregar -->
         <div class="add-btn-container">
-            <button id="btn_add" class="btn-add">Agregar un item</button>
+            <button id="btn_add" class="btn-add">
+                <img class="image-icon" src="app/public/img/add.png" alt="">Agregar un item
+            </button>
         </div>
 
 
@@ -94,8 +96,12 @@ echo "</pre>"; */
                         <td><?= $item['status'] ?></td>
                         <td><?= $parentName ?></td>
                         <td class="actions">
-                            <button class="btn-edit" onclick="editItem(<?= $item['id_menu'] ?>)">Editar</button>
-                            <button class="btn-delete" onclick="return deleteItem(<?= $item['id_menu'] ?>)">Eliminar</button>
+                            <button class="btn-edit" onclick="editItem(<?= $item['id_menu'] ?>)">
+                                <img class="image-icon" src="app/public/img/edit.png" alt=""> Editar
+                            </button>
+                            <button class="btn-delete" onclick="return deleteItem(<?= $item['id_menu'] ?>)">
+                                <img class="image-icon" src="app/public/img/delete.png" alt=""> Eliminar
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

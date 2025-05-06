@@ -4,8 +4,10 @@ print_r($data);
 echo "</pre>"; */
 ?>
 <div class="card">
-    <button id="btn_back" class="btn-back" onclick="returnIndex()">Regresar</button>
-    <h2><?= $data['text']['title']?></h2>
+    <button id="btn_back" class="btn-back" onclick="returnIndex()">
+        <img src="app/public/img/return.png" alt=""> Regresar
+    </button>
+    <h2><?= $data['text']['title'] ?></h2>
 
     <form action="<?= $data['action'] ?>" method="post">
         <div class="form-group">
@@ -17,15 +19,15 @@ echo "</pre>"; */
             <label for="parent_menu">Menú Padre</label>
             <select id="parent_menu" name="parent_menu">
                 <option value="0">-</option>
-                
-                <?php $selectedItem = $data['item']['parent']['id']?>
+
+                <?php $selectedItem = $data['item']['parent']['id'] ?>
 
                 <?php foreach ($data['list']['items'] as $item): ?>
-                    <option value="<?= $item['id_menu'] ?>"<?= ($selectedItem == $item['id_menu']) ? 'selected' : '' ?> ><?= $item['name'] ?></option>
+                    <option value="<?= $item['id_menu'] ?>" <?= ($selectedItem == $item['id_menu']) ? 'selected' : '' ?>><?= $item['name'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
 
-        <button class="card-button" id="btn_save" type="button" onclick="addItem()"><?= $data['text']['button']?></button>
+        <button class="card-button" id="btn_save" type="button" onclick="addItem()"><?= $data['text']['button'] ?></button>
     </form>
 </div>

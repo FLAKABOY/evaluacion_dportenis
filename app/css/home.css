@@ -93,7 +93,13 @@ button {
     background-color: #28a745;
     margin-bottom: 10px;
     margin-right: 0;
-    
+}
+
+.image-icon {
+    width: auto;
+    vertical-align: middle; 
+    margin-right: 5px; 
+    display: inline-block; 
 }
 
 
