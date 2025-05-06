@@ -4,6 +4,7 @@ print_r($data);
 echo "</pre>"; */
 ?>
 <div class="card">
+    <button id="btn_back" class="btn-back" onclick="returnIndex()">Regresar</button>
     <h2><?= $data['text']['title']?></h2>
 
     <form action="<?= $data['action'] ?>" method="post">
@@ -25,6 +26,6 @@ echo "</pre>"; */
             </select>
         </div>
 
-        <button id="btn_save" type="button" onclick="addItem()"><?= $data['text']['button']?></button>
+        <button class="card-button" id="btn_save" type="button" onclick="addItem()"><?= $data['text']['button']?></button>
     </form>
 </div>

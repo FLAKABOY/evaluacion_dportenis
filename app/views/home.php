@@ -15,7 +15,7 @@ echo "</pre>"; */
     <title>Menú</title>
     <link rel="stylesheet" href="app/css/home.css">
     <link rel="stylesheet" href="app/css/pagination.css">
-    
+
 </head>
 
 <body>
@@ -23,6 +23,8 @@ echo "</pre>"; */
     <!-- Menú lateral -->
     <div class="menu">
         <h2>Menú</h2>
+        <hr>
+        <!-- Colocar un nombre general para el grupo de menus -->
         <ul>
             <?php foreach ($data['menu'] as $item): ?>
                 <li>
@@ -48,7 +50,10 @@ echo "</pre>"; */
     <div class="content">
         <h2>Lista de Ítems del Menú</h2>
         <!-- Botón Agregar -->
-        <button id="btn_add" class="btn-add">Agregar un item</button>
+        <div class="add-btn-container">
+            <button id="btn_add" class="btn-add">Agregar un item</button>
+        </div>
+
 
         <?php
         // Configurar paginación
@@ -210,6 +215,11 @@ echo "</pre>"; */
             xhr.send();
         }
         return false; // Evitar el comportamiento por defecto del botón
+    }
+
+    function returnIndex() {
+        // Redirigir a la página de inicio
+        window.location.href = 'http://localhost/evaluacion';
     }
 </script>
 

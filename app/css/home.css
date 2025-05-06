@@ -40,7 +40,8 @@ body {
 
 .content {
     margin-left: 270px;
-    padding: 20px;
+    padding-left: 80px;
+    padding-right: 20px;
     width: calc(100% - 270px);
 }
 
@@ -80,11 +81,26 @@ button {
     font-weight: bold;
     color: white;
 }
+/* Boton regresar */
+.btn-back {
+    background-color: #7c7c7c !important;
+    margin-bottom: 10px !important;
+    margin-right: 0 !important;
+}
 
 /* Botón Agregar */
 .btn-add {
     background-color: #28a745;
     margin-bottom: 10px;
+    margin-right: 0;
+    
+}
+
+
+.add-btn-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
 }
 
 .btn-add:hover {
@@ -160,7 +176,7 @@ button {
 }
 
 /* Estilos para el botón */
-.card button {
+.card-button {
     width: 100%;
     padding: 10px;
     background-color: #28a745;
