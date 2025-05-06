@@ -1,0 +1,180 @@
+body {
+    margin: 0;
+    display: flex;
+    font-family: Arial, sans-serif;
+}
+
+.menu {
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    position: fixed;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.menu li {
+    margin-bottom: 10px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.menu a:hover {
+    color: #f4f4f4;
+}
+
+.submenu {
+    margin-left: 20px;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    width: calc(100% - 270px);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.actions a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: blue;
+}
+
+.actions a:hover {
+    text-decoration: underline;
+}
+
+/* Botón general */
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+/* Botón Agregar */
+.btn-add {
+    background-color: #28a745;
+    margin-bottom: 10px;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}
+
+/* Botón Editar */
+.btn-edit {
+    background-color: #007bff;
+}
+
+.btn-edit:hover {
+    background-color: #0069d9;
+}
+
+/* Botón Eliminar */
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.card {
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin: 20px auto;
+}
+
+/* Título de la tarjeta */
+.card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+/* Estilos para el formulario */
+.card .form-group {
+    margin-bottom: 15px;
+}
+
+/* Estilo para las etiquetas de los campos */
+.card label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+/* Estilos para los inputs y selects */
+.card input,
+.card select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    background-color: #f9f9f9; /* Fondo claro para inputs */
+}
+
+.card input:focus,
+.card select:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+/* Estilos para el botón */
+.card button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+    background-color: #218838;
+}
+
+.card button:active {
+    background-color: #1e7e34;
+}
