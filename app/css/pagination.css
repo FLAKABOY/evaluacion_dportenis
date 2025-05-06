@@ -1,0 +1,54 @@
+/* Contenedor de la paginación */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Estilo de la lista de paginación */
+.pagination {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    gap: 6px;
+}
+
+/* Estilo de los elementos de la paginación (cuadros) */
+.page-item {
+    display: inline-block;
+}
+
+/* Estilo de los enlaces de la paginación (botones) */
+.page-link {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+/* Estilo cuando se pasa el mouse sobre el enlace */
+.page-link:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+/* Estilo cuando la página está activa (seleccionada) */
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Agregar efecto visual cuando los elementos de la paginación se alinean */
+.page-item a {
+    display: inline-block;
+    padding: 8px 14px;
+}

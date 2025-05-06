@@ -126,6 +126,25 @@ class ItemsController extends Controller
         exit;
     }
 
+    public function delete()
+    {
+        header('Content-Type: application/json'); // Establece el tipo de contenido a JSON
+
+        $id = $_GET['id']; // ID del menú a eliminar
+
+
+        //Consumir el procedimiento almacenado para eliminar el item y obtener la respuesta de error
+        $error = $this->model->executeBaseProcedure('sp_save_item', ['delete', $id,'',''])[0]['ERROR'];
+
+        if (!$error) {
+            echo json_encode(['status' => 'success', 'message' => 'El menú se ha eliminado correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el menú.']);
+        }
+
+        exit;
+    }
+
 }
 
 
@@ -137,6 +156,6 @@ if (isset($_GET['function'])) {
     if (method_exists($controller, $function)) {
         $controller->$function();
     } else {
-        echo "La función '$function' no existe en ItemsController.";
+        echo json_encode(['status' => 'error', 'message' => 'Función no válida.']);
     }
 }

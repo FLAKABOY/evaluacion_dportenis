@@ -14,6 +14,8 @@ echo "</pre>"; */
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú</title>
     <link rel="stylesheet" href="app/css/home.css">
+    <link rel="stylesheet" href="app/css/pagination.css">
+    
 </head>
 
 <body>
@@ -47,6 +49,17 @@ echo "</pre>"; */
         <h2>Lista de Ítems del Menú</h2>
         <!-- Botón Agregar -->
         <button id="btn_add" class="btn-add">Agregar un item</button>
+
+        <?php
+        // Configurar paginación
+        $itemsPerPage = 2; // Número de ítems por página
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Página actual
+        $totalItems = count($data['list']['items']); // Total de ítems
+        $totalPages = ceil($totalItems / $itemsPerPage); // Total de páginas
+        $offset = ($currentPage - 1) * $itemsPerPage; // Desplazamiento para la paginación
+        $itemsPaginated = array_slice($data['list']['items'], $offset, $itemsPerPage); // Ítems para la página actual
+        ?>
+
         <table>
             <thead>
                 <tr>
@@ -59,9 +72,8 @@ echo "</pre>"; */
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data['list']['items'] as $item): ?>
+                <?php foreach ($itemsPaginated as $item): ?>
                     <?php
-                    // Buscar el nombre del padre según el id_parent
                     $parentName = '';
                     foreach ($data['list']['items'] as $possibleParent) {
                         if ($possibleParent['id_menu'] == $item['id_parent']) {
@@ -84,7 +96,19 @@ echo "</pre>"; */
                 <?php endforeach; ?>
             </tbody>
         </table>
+
+        <!-- Paginación -->
+        <div class="pagination-container">
+            <ul class="pagination">
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="page-item <?= $i === $currentPage ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </div>
     </div>
+
 
 </body>
 
@@ -156,6 +180,36 @@ echo "</pre>"; */
                 console.error('Error al cargar la vista desde el controlador:', error);
             });
 
+    }
+
+    function deleteItem(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar este ítem?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'app/controllers/ItemsController.php?function=delete&id=' + id, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.status === 'success') {
+                                alert(response.message);
+                                window.location.href = 'http://localhost/evaluacion';
+                            } else {
+                                alert(response.message);
+                            }
+                        } catch (e) {
+                            console.error('Respuesta inválida del servidor:', xhr.responseText);
+                            alert('Error al procesar la respuesta del servidor.');
+                        }
+                    } else {
+                        console.error('Error en la petición AJAX:', xhr.status);
+                        alert('Error en la conexión con el servidor.');
+                    }
+                }
+            };
+            xhr.send();
+        }
+        return false; // Evitar el comportamiento por defecto del botón
     }
 </script>
 

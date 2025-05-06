@@ -149,7 +149,8 @@ button {
     font-size: 16px;
     box-sizing: border-box;
     margin-top: 5px;
-    background-color: #f9f9f9; /* Fondo claro para inputs */
+    background-color: #f9f9f9;
+    /* Fondo claro para inputs */
 }
 
 .card input:focus,
@@ -178,3 +179,4 @@ button {
 .card button:active {
     background-color: #1e7e34;
 }
+
