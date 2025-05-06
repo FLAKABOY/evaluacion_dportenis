@@ -1,15 +1,15 @@
 <?php
-echo "<pre>";
+/* echo "<pre>";
 print_r($data);
-echo "</pre>";
+echo "</pre>"; */
 ?>
 <div class="card">
-    <h2>Agregar Menú</h2>
+    <h2><?= $data['text']['title']?></h2>
 
     <form action="<?= $data['action'] ?>" method="post">
         <div class="form-group">
             <label for="menu_name">Nombre del Menú</label>
-            <input type="text" id="menu_name" name="menu_name" value="<?= $data['item']['name']?>" required>
+            <input type="text" id="menu_name" name="menu_name" value="<?= isset($data['item']['name']) ? $data['item']['name'] : '' ?>" required>
         </div>
 
         <div class="form-group">
@@ -25,6 +25,6 @@ echo "</pre>";
             </select>
         </div>
 
-        <button id="btn_save" type="button" onclick="addItem()">Agregar Menú</button>
+        <button id="btn_save" type="button" onclick="addItem()"><?= $data['text']['button']?></button>
     </form>
 </div>

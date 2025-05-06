@@ -24,6 +24,10 @@ class ItemsController extends Controller
         //Convertir el json a array
         $data['list']['items'] = Utilerias::jsonToArray($data['list']['items']);
         $data['action'] = 'http://localhost' . $_SERVER['PHP_SELF'] . '?controller=items&function=saveItem';
+        $data['text'] = [
+            'title' => 'Agregar Item',
+            'button' => 'Agregar Item',
+        ];
         $this->view('add_item', $data);
     }
 
@@ -35,6 +39,11 @@ class ItemsController extends Controller
         $data['list']['items'] = $this->model->executeBaseProcedure('sp_get_menu_items', ['get_menu_parents', ''])[0]['items'];
         //Convertir el json a array
         $data['list']['items'] = Utilerias::jsonToArray($data['list']['items']);
+
+        $data['text'] = [
+            'title' => 'Editar Item',
+            'button' => 'Actualizar Item',
+        ];
 
         //Armar los filtros para la consulta
         $filters = Utilerias::arrayToJson(
@@ -50,7 +59,7 @@ class ItemsController extends Controller
         $data['item'] = Utilerias::jsonToArray($data['item']);
 
         //accion del formulario
-        $data['action'] = 'http://localhost' . $_SERVER['PHP_SELF'] . '?controller=items&function=updateItem&id=' . $id;
+        $data['action'] = 'http://localhost' . $_SERVER['PHP_SELF'] . '?controller=items&function=update&id=' . $id;
 
         //Reutilizar la vista de agregar item para editar
         $this->view('add_item', $data);
@@ -86,6 +95,36 @@ class ItemsController extends Controller
     }
 
     //Funcion para actualizar el item
+    public function update()
+    {
+        header('Content-Type: application/json'); // Establece el tipo de contenido a JSON
+
+        $menu_name = $_POST['menu_name']; // Nombre del menú
+        $parent_menu = $_POST['parent_menu']; // ID del menú padre
+        $id = $_GET['id']; // ID del menú a editar
+
+
+        //Colocamos los valores en el modelo ya que si un tipo de dato no es correcto se lanza una excepción
+        $this->model->setName($menu_name);
+        $this->model->setIdParent($parent_menu);
+        $this->model->setIdMenu($id);
+
+        if (empty($menu_name)) {
+            echo json_encode(['status' => 'error', 'message' => 'El nombre del menú es obligatorio.']);
+            exit;
+        }
+
+        //Consumir el procedimiento almacenado para guardar el item y obtener la respuesta de error
+        $error = $this->model->executeBaseProcedure('sp_save_item', ['update', $this->model->getIdMenu() ,$this->model->getIdParent(), $this->model->getName()])[0]['ERROR'];
+
+        if (!$error) {
+            echo json_encode(['status' => 'success', 'message' => 'El menú se ha actualizado correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar el menú.']);
+        }
+
+        exit;
+    }
 
 }
 
