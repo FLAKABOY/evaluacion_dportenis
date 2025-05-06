@@ -1,8 +1,8 @@
 <?php
-
-require_once 'Controller.php';
-require_once 'models/IndexModel.php';
-require_once 'utils/Utilerias.php';
+namespace App\controllers;
+use App\Controllers\Controller;
+use App\Models\IndexModel;
+use App\Utils\Utilerias;
 
 class IndexController extends Controller
 {
@@ -10,7 +10,7 @@ class IndexController extends Controller
 
     public function __construct()
     {
-        $this->model = IndexModel::getInstance();
+        $this->model = new IndexModel();
     }
 
     public function index()

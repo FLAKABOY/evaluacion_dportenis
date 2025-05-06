@@ -1,10 +1,14 @@
 <?php
+namespace App\Models;
+use PDO;
+use PDOException;
+
 class Model
 {
     protected static $instance = null;
     protected $pdo;
 
-    protected function __construct()
+    public function __construct()
     {
         $host = "localhost";
         $dbname = "evaluacion";
@@ -26,13 +30,7 @@ class Model
         }
     }
 
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+    
 
     public function getConnection(): PDO
     {

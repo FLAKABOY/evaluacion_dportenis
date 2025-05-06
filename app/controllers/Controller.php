@@ -1,6 +1,7 @@
 <?php
+namespace App\Controllers;
 
-
+use App\Models\Model;
 class Controller
 {
     private $model;

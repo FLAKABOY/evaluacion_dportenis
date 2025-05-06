@@ -1,10 +1,10 @@
-<!-- <?php
+<?php
+// error_reporting(0);
+/* echo "<pre>";
+print_r($data);
+echo "</pre>"; */
 
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-
-        ?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú</title>
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="app/css/home.css">
 </head>
 
 <body>
@@ -91,7 +91,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('btn_add').addEventListener('click', function() {
-            fetch('controllers/ItemsController.php?function=index')
+            fetch('app/controllers/ItemsController.php?function=index')
                 .then(response => response.text())
                 .then(html => {
                     document.querySelector('.content').innerHTML = html;
@@ -101,6 +101,62 @@
                 });
         });
     });
+
+    function addItem() {
+        // Validar el campo nombre del menú
+        var menuName = document.getElementById('menu_name').value;
+        if (menuName.trim() === '') {
+            alert('El nombre del menú es obligatorio.');
+            return;
+        }
+
+        // Imprimir en consola para verificar
+        console.log('Nombre del menú:', menuName);
+
+        // Obtener el formulario y enviarlo vía AJAX
+        var form = document.querySelector('form');
+        var formData = new FormData(form);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            alert(response.message);
+                            window.location.href = 'http://localhost/evaluacion';
+                        } else {
+                            alert(response.message);
+                        }
+                    } catch (e) {
+                        console.error('Respuesta inválida del servidor:', xhr.responseText);
+                        alert('Error al procesar la respuesta del servidor.');
+                    }
+                } else {
+                    console.error('Error en la petición AJAX:', xhr.status);
+                    alert('Error en la conexión con el servidor.');
+                }
+            }
+        };
+
+        xhr.send(formData);
+    }
+
+    function editItem(id) {
+        // Redirigir a la página de edición del ítem
+
+        fetch('app/controllers/ItemsController.php?function=edit&id=' + id)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('.content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error al cargar la vista desde el controlador:', error);
+            });
+
+    }
 </script>
 
 </html>
