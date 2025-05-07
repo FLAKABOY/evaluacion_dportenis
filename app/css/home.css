@@ -32,6 +32,17 @@ body {
     color: #f4f4f4;
 }
 
+.menu a.active {
+    font-weight: bold;
+    color: #00ffcc; /* o el color que prefieras para destacar */
+}
+
+.menu .marker {
+    margin-left: 6px;
+    color: #00ffcc; /* puede coincidir con el color del enlace activo */
+    font-weight: bold;
+}
+
 .submenu {
     margin-left: 20px;
     list-style-type: none;

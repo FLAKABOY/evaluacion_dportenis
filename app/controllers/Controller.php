@@ -41,4 +41,30 @@ class Controller
             die("Vista no encontrada: " . $view);
         }
     }
+
+    public function component($component, $data = [])
+    {
+        // Definir la ruta de la carpeta components sin importar la carpeta actual
+        $baseDir = dirname(__FILE__, 2); // Obtener el directorio base (dos niveles arriba)
+        $componentsDir = $baseDir . '/views/components'; // Ruta de la carpeta components
+        // Verificar si la carpeta components existe
+        if (!is_dir($componentsDir)) {
+            die("La carpeta components no existe en la ruta: " . $componentsDir);
+        }
+        // Verificar si la carpeta components es accesible
+        if (!is_readable($componentsDir)) {
+            die("La carpeta components no es accesible: " . $componentsDir);
+        }
+
+        // Verificar si el componente existe
+        if (file_exists("$componentsDir/$component.php")) {
+            // Extraer datos como variables
+            extract($data);
+
+            // Incluir el componente
+            require_once "$componentsDir/$component.php";
+        } else {
+            die("Componente no encontrado: " . $component);
+        }
+    }
 }

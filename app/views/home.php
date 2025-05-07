@@ -24,7 +24,6 @@ echo "</pre>"; */
     <div class="menu">
         <h2>Menú</h2>
         <hr>
-        <!-- Colocar un nombre general para el grupo de menus -->
         <ul>
             <?php foreach ($data['menu'] as $item): ?>
                 <li>
@@ -33,7 +32,7 @@ echo "</pre>"; */
                         <ul class="submenu">
                             <?php foreach ($item['submenus'] as $submenu): ?>
                                 <li>
-                                    <a href="?controller=<?= strtolower($submenu['nombre']) ?>&function=index">
+                                    <a href="#" class="submenu-link" onclick="defaultController('<?= $submenu['nombre'] ?>')">
                                         <?= $submenu['nombre'] ?>
                                     </a>
                                 </li>
@@ -221,6 +220,37 @@ echo "</pre>"; */
             xhr.send();
         }
         return false; // Evitar el comportamiento por defecto del botón
+    }
+
+    function defaultController(name) {
+        event.preventDefault(); // Evita que el enlace se siga
+
+        // Quitar estado activo previo
+        document.querySelectorAll('.submenu-link').forEach(link => {
+            link.classList.remove('active');
+            const marker = link.querySelector('.marker');
+            if (marker) marker.remove();
+        });
+
+        // Marcar el nuevo enlace como activo
+        const clicked = event.currentTarget;
+        clicked.classList.add('active');
+
+        // Agregar el ✔ si no está ya
+        const marker = document.createElement('span');
+        marker.classList.add('marker');
+        marker.textContent = '✔';
+        clicked.appendChild(marker);
+
+        // Redirigir a defaultController
+        fetch('app/controllers/DefaultController.php?function=index&name=' + name)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('.content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error al cargar la vista desde el controlador:', error);
+            });
     }
 
     function returnIndex() {
