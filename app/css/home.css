@@ -2,6 +2,7 @@ body {
     margin: 0;
     display: flex;
     font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
 }
 
 .menu {
@@ -56,18 +57,49 @@ body {
     width: calc(100% - 270px);
 }
 
+.tabla-container {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    table-layout: fixed; 
+    border-radius: 5px;
+    overflow: hidden;
 }
+
+thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+thead tr th:last-child {
+    border-top-right-radius: 5px;
+}
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 5px;
+}
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 5px;
+}
+
+
+
 
 th,
 td {
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     padding: 10px;
     text-align: left;
 }
+
+
 
 th {
     background-color: #f4f4f4;
@@ -92,6 +124,39 @@ button {
     font-weight: bold;
     color: white;
 }
+
+.btn-edit {
+    background-color: transparent;
+    border: 2px solid #268ad3;
+    color: #268ad3;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+
+.btn-delete {
+    background-color: transparent;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+
+
+
 /* Boton regresar */
 .btn-back {
     background-color: #7c7c7c !important;
@@ -107,11 +172,14 @@ button {
 }
 
 .image-icon {
-    width: auto;
-    vertical-align: middle; 
-    margin-right: 5px; 
-    display: inline-block; 
+    width: 18px;    
+    height: 18px;     
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+   
 }
+
 
 
 .add-btn-container{
@@ -124,23 +192,6 @@ button {
     background-color: #218838;
 }
 
-/* Botón Editar */
-.btn-edit {
-    background-color: #007bff;
-}
-
-.btn-edit:hover {
-    background-color: #0069d9;
-}
-
-/* Botón Eliminar */
-.btn-delete {
-    background-color: #dc3545;
-}
-
-.btn-delete:hover {
-    background-color: #c82333;
-}
 
 .card {
     width: 400px;
@@ -214,3 +265,17 @@ button {
     background-color: #1e7e34;
 }
 
+.actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.tabla-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}

@@ -47,13 +47,6 @@ echo "</pre>"; */
 
     <!-- Contenido principal -->
     <div class="content">
-        <h2>Lista de Ítems del Menú</h2>
-        <!-- Botón Agregar -->
-        <div class="add-btn-container">
-            <button id="btn_add" class="btn-add">
-                <img class="image-icon" src="app/public/img/add.png" alt="">Agregar un item
-            </button>
-        </div>
 
 
         <?php
@@ -66,46 +59,57 @@ echo "</pre>"; */
         $itemsPaginated = array_slice($data['list']['items'], $offset, $itemsPerPage); // Ítems para la página actual
         ?>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Status</th>
-                    <th>Padre</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($itemsPaginated as $item): ?>
-                    <?php
-                    $parentName = '';
-                    foreach ($data['list']['items'] as $possibleParent) {
-                        if ($possibleParent['id_menu'] == $item['id_parent']) {
-                            $parentName = $possibleParent['name'];
-                            break;
-                        }
-                    }
-                    ?>
+        <div class="tabla-container">
+            <table>
+
+                    <h2  class="tabla-titulo" >Lista de Ítems del Menú</h2>
+                <!-- Botón Agregar -->
+                <div class="add-btn-container">
+                    <button id="btn_add" class="btn-add">
+                        <img class="image-icon" src="app/public/img/mas.png" alt="">  Agregar un item
+                    </button>
+                </div>
+
+                <thead>
                     <tr>
-                        <td><?= $item['id_menu'] ?></td>
-                        <td><?= $item['name'] ?></td>
-                        <td><?= $item['description'] ?></td>
-                        <td><?= $item['status'] ?></td>
-                        <td><?= $parentName ?></td>
-                        <td class="actions">
-                            <button class="btn-edit" onclick="editItem(<?= $item['id_menu'] ?>)">
-                                <img class="image-icon" src="app/public/img/edit.png" alt=""> Editar
-                            </button>
-                            <button class="btn-delete" onclick="return deleteItem(<?= $item['id_menu'] ?>)">
-                                <img class="image-icon" src="app/public/img/delete.png" alt=""> Eliminar
-                            </button>
-                        </td>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Status</th>
+                        <th>Padre</th>
+                        <th>Acciones</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($itemsPaginated as $item): ?>
+                        <?php
+                        $parentName = '';
+                        foreach ($data['list']['items'] as $possibleParent) {
+                            if ($possibleParent['id_menu'] == $item['id_parent']) {
+                                $parentName = $possibleParent['name'];
+                                break;
+                            }
+                        }
+                        ?>
+                        <tr>
+                            <td><?= $item['id_menu'] ?></td>
+                            <td><?= $item['name'] ?></td>
+                            <td><?= $item['description'] ?></td>
+                            <td><?= $item['status'] ?></td>
+                            <td><?= $parentName ?></td>
+                            <td class="actions">
+                                <button class="btn-edit" onclick="editItem(<?= $item['id_menu'] ?>)">
+                                    <img class="image-icon" src="app/public/img/editar.png" alt="">
+                                </button>
+                                <button class="btn-delete" onclick="return deleteItem(<?= $item['id_menu'] ?>)">
+                                    <img class="image-icon" src="app/public/img/eliminar.png" alt="">
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Paginación -->
         <div class="pagination-container">
