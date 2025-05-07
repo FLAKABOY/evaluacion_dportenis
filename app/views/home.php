@@ -22,7 +22,7 @@ echo "</pre>"; */
 
     <!-- Menú lateral -->
     <div class="menu">
-        <h2>Menú</h2>
+        <h2><a href="#" onclick="returnIndex()">Menú</a></h2>
         <hr>
         <ul>
             <?php foreach ($data['menu'] as $item): ?>
