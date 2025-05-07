@@ -11,7 +11,7 @@
  Target Server Version : 100432
  File Encoding         : 65001
 
- Date: 06/05/2025 15:53:31
+ Date: 07/05/2025 10:11:45
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `menus`  (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'nombre del menu',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'descripcion del menu',
   PRIMARY KEY (`id_menu`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menus
@@ -39,6 +39,8 @@ INSERT INTO `menus` VALUES (4, 1, 1, 'paises', 'catalogo de paises');
 INSERT INTO `menus` VALUES (5, 3, 1, 'TI', 'Departamento de TI');
 INSERT INTO `menus` VALUES (14, 1, 1, 'Ciudades', '');
 INSERT INTO `menus` VALUES (15, 3, 1, 'Sistemas', '');
+INSERT INTO `menus` VALUES (16, 0, 1, 'Configuracion', 'Configuraciones');
+INSERT INTO `menus` VALUES (17, 16, 1, 'Cuenta', 'config de cuenta');
 
 -- ----------------------------
 -- Procedure structure for get_menu_json
