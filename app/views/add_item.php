@@ -17,7 +17,7 @@ echo "</pre>"; */
 
         <div class="form-group">
             <label for="description">Descripcion</label>
-            <textarea name="description" id="txt_description"><?= isset($data['item']['description']) ? $data['item']['name'] : '' ?></textarea>
+            <textarea name="description" id="txt_description"><?= isset($data['item']['description']) ? $data['item']['description'] : '' ?></textarea>
         </div>
 
         <div class="form-group">
